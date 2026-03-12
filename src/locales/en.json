@@ -1,0 +1,54 @@
+{
+  "navbar": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "skills": "Skills",
+    "contact": "Contact",
+    "contactButton": "Contact Me"
+  },
+  "hero": {
+    "intro": "Hello, I'm",
+    "name": "Karim Gamal",
+    "role": "Web Developer",
+    "description": "Web developer specializing in building great user experiences and modern web solutions using the latest technologies and tools.",
+    "downloadCV": "Download CV",
+    "viewProjects": "View Projects"
+  },
+  "skills": {
+    "title": "My Skills & Tools",
+    "subtitle": "Technologies I use to build digital solutions"
+  },
+  "services": {
+    "title": "My Software Services",
+    "subtitle": "Integrated technical solutions for your digital business growth",
+    "list": [
+      {
+        "id": 1,
+        "title": "Website Maintenance",
+        "description": "I provide maintenance and repair services to fix bugs quickly and ensure continuous operation."
+      },
+      {
+        "id": 2,
+        "title": "Store Management",
+        "description": "I manage your online store regularly, monitoring performance to achieve the best long-term results."
+      },
+      {
+        "id": 3,
+        "title": "Web Development",
+        "description": "I design and develop professional websites and e-commerce stores that help you stand out."
+      }
+    ]
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry"
+  },
+  "accessibility": {
+    "toggleTheme": "Toggle dark mode",
+    "toggleLanguage": "Toggle language",
+    "openMobileMenu": "Open menu",
+    "closeMobileMenu": "Close menu"
+  }
+}
