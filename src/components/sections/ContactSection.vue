@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import siteConfig from '@/config/site'
 import { submitContactForm } from '@/api/contact'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const form = ref({
   name: '',
@@ -26,7 +26,7 @@ const handleSubmit = async () => {
     // 1. Submit to API
     await submitContactForm(form.value)
     
-    // 2. WhatsApp Fallback (as requested to keep)
+    // 2. WhatsApp Fallback
     const whatsappMessage = encodeURIComponent(
       `*New message from portfolio*\n\n` +
       `*Name:* ${form.value.name}\n` +
@@ -41,7 +41,6 @@ const handleSubmit = async () => {
     form.value = { name: '', email: '', subject: '', message: '' }
   } catch (error) {
     submitError.value = true
-    console.error('Submission failed:', error)
   } finally {
     isSubmitting.value = false
   }
@@ -186,10 +185,10 @@ const socialLinks = [
               <i class="fas fa-comments text-3xl text-primary"></i>
             </div>
             <h3 class="text-3xl font-black text-gray-900 dark:text-white mb-4">
-              {{ locale === 'ar' ? 'ابقى على تواصل' : 'Stay in Touch' }}
+              {{ t('contact.stayInTouch') }}
             </h3>
             <p class="text-gray-500 dark:text-gray-400 font-bold leading-relaxed">
-              {{ locale === 'ar' ? 'أنا متاح دائماً لمناقشة المشاريع البرمجية.' : "I'm always available to discuss software projects." }}
+              {{ t('contact.stayInTouchDesc') }}
             </p>
           </div>
           
@@ -211,12 +210,6 @@ const socialLinks = [
     </div>
   </section>
 </template>
-
-<script>
-export default {
-  name: 'ContactSection'
-}
-</script>
 
 <style scoped>
 @reference "../../style.css";

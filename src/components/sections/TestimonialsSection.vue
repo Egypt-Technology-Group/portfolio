@@ -127,10 +127,10 @@ onUnmounted(() => {
       <!-- Section Header -->
       <div class="mb-16 px-4 text-center">
         <h2 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white transition-colors">
-          {{ locale === 'ar' ? 'آراء' : 'Client' }} <span class="text-primary">{{ locale === 'ar' ? 'العملاء' : 'Testimonials' }}</span>
+          {{ t('testimonials.title') }} <span class="text-primary">{{ t('testimonials.subtitle') }}</span>
         </h2>
         <p class="text-primary font-black uppercase tracking-[3px] mt-4 text-sm">
-          {{ locale === 'ar' ? 'ثقة عملائي هي رأس مالي وسر نجاحي' : 'Customer trust is my greatest asset' }}
+          {{ t('testimonials.quote') }}
         </p>
         <div class="w-24 h-1 bg-primary/30 mx-auto mt-4 rounded-full"></div>
       </div>

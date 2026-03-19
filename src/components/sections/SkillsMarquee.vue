@@ -7,7 +7,7 @@ const { t, locale } = useI18n()
 
 // Duplicate skills array for seamless infinite scroll
 const duplicatedSkills = computed(() => {
-  const duplicated = [...skills, ...skills, ...skills] // More duplicates for better coverage
+  const duplicated = [...skills, ...skills, ...skills] 
   return duplicated.map((skill, index) => ({ ...skill, id: index }))
 })
 </script>
@@ -16,10 +16,10 @@ const duplicatedSkills = computed(() => {
   <section id="skills" class="w-full bg-white dark:bg-[#1a1c20] py-16 overflow-hidden select-none transition-colors duration-500">
     <div class="text-center mb-12 px-4">
       <h2 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-2">
-        {{ locale === 'ar' ? 'تقنياتي' : 'My Stack' }} <span class="text-primary">& {{ locale === 'ar' ? 'أدواتي' : 'Tools' }}</span>
+        {{ t('skills.title') }} <span class="text-primary">& {{ t('skills.subtitle') }}</span>
       </h2>
       <p class="text-gray-500 dark:text-gray-400 font-bold text-sm">
-        {{ locale === 'ar' ? 'أحدث التقنيات لضمان جودة المشاريع البرمجية' : 'Modern technologies ensuring the highest quality standards.' }}
+        {{ t('skills.description') }}
       </p>
       <div class="w-24 h-1.5 mx-auto mt-4 rounded-full bg-primary opacity-80 shadow-lg shadow-primary/20"></div>
     </div>

@@ -12,8 +12,8 @@ const addStructuredData = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": locale.value === 'ar' ? "أكاديمية كريم جمال التقنية" : "Karim Gamal Tech Academy",
-    "description": locale.value === 'ar' ? "مقالات تخصصية في البرمجة والأمن والـ SEO" : "Specialized articles in programming, security and SEO",
+    "name": t('articles.academy'),
+    "description": t('articles.description'),
     "url": window.location.href
   }
   
@@ -45,13 +45,13 @@ onUnmounted(() => {
       <div class="mb-16 text-center">
         <div class="flex items-center justify-center gap-2 text-primary font-black uppercase text-xs mb-4 tracking-widest">
           <i class="fas fa-fire animate-pulse"></i>
-          {{ locale === 'ar' ? 'أكاديمية كريم جمال التقنية' : 'Karim Gamal Tech Academy' }}
+          {{ t('articles.academy') }}
         </div>
         <h2 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-4">
-          {{ locale === 'ar' ? 'مقالات' : 'Deep' }} <span class="text-primary">{{ locale === 'ar' ? 'تخصصية' : 'Articles' }}</span> {{ locale === 'ar' ? 'متعمقة.' : '' }}
+          {{ t('articles.title') }} <span class="text-primary">{{ t('articles.subtitle') }}</span>
         </h2>
         <p class="text-gray-500 dark:text-gray-400 font-bold max-w-lg mx-auto">
-          {{ locale === 'ar' ? 'دروس تقنية تغنيك عن الدورات المدفوعة' : 'Technical lessons that replace paid courses.' }}
+          {{ t('articles.description') }}
         </p>
       </div>
 
@@ -81,7 +81,7 @@ onUnmounted(() => {
             </p>
             <div class="flex items-center text-primary font-black text-sm group">
               <span class="border-b-2 border-primary/20 pb-1 group-hover:border-primary transition-all mr-2">
-                {{ locale === 'ar' ? 'اقرأ المزيد' : 'Read More' }}
+                {{ t('articles.readMore') }}
               </span>
               <i :class="['fas', locale === 'ar' ? 'fa-arrow-left' : 'fa-arrow-right', 'transition-transform group-hover:translate-x-1']"></i>
             </div>

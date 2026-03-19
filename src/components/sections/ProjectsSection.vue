@@ -7,14 +7,13 @@ const { t, locale } = useI18n()
 
 const activeFilter = ref('All')
 const filters = computed(() => {
-  const baseFilters = locale.value === 'ar' ? ['الكل', 'HTML/CSS/JS', 'PHP', 'Vue.js', 'React'] : ['All', 'HTML/CSS/JS', 'PHP', 'Vue.js', 'React']
-  return baseFilters
+  return [t('projects.filters.all'), 'HTML/CSS/JS', 'PHP', 'Vue.js', 'React']
 })
 
 // Sync activeFilter with language change
 const currentFilter = computed(() => {
   if (activeFilter.value === 'All' || activeFilter.value === 'الكل') {
-    return locale.value === 'ar' ? 'الكل' : 'All'
+    return t('projects.filters.all')
   }
   return activeFilter.value
 })
@@ -22,7 +21,7 @@ const currentFilter = computed(() => {
 const filteredProjects = computed(() => {
   let filtered = projects
   const filterValue = currentFilter.value
-  if (filterValue !== 'All' && filterValue !== 'الكل') {
+  if (filterValue !== t('projects.filters.all')) {
     filtered = projects.filter(project => project.category === filterValue)
   }
   return filtered.sort((a, b) => a.order - b.order)
@@ -43,11 +42,6 @@ const getTechIcon = (tech) => {
   }
   return icons[tech] || 'fas fa-code'
 }
-
-const generateSrcSet = (imagePath) => {
-  const sizes = [320, 640, 1024]
-  return sizes.map(size => `${imagePath}?w=${size} ${size}w`).join(', ')
-}
 </script>
 
 <template>
@@ -60,7 +54,7 @@ const generateSrcSet = (imagePath) => {
           <div class="w-24 h-1.5 bg-primary rounded-full mx-auto mt-2"></div>
         </h2>
         <p class="text-gray-500 dark:text-gray-400 font-bold mt-4 max-w-md">
-          {{ locale === 'ar' ? 'إطلع على أحدث مشاريعي المنفذة بأحدث التقنيات البرمجية.' : 'Check out my latest projects built with modern technologies.' }}
+          {{ t('projects.description') }}
         </p>
 
         <!-- Filters -->
@@ -71,7 +65,7 @@ const generateSrcSet = (imagePath) => {
             @click="activeFilter = filter"
             :class="[
               'px-6 py-2.5 rounded-xl font-bold transition-all border shadow-sm',
-              (activeFilter === filter || (filter === 'All' && activeFilter === 'الكل') || (filter === 'الكل' && activeFilter === 'All'))
+              (activeFilter === filter || (filter === t('projects.filters.all') && (activeFilter === 'All' || activeFilter === 'الكل')))
                 ? 'bg-primary text-white border-primary scale-105 shadow-primary/20'
                 : 'bg-white dark:bg-[#24262b] text-gray-600 dark:text-gray-400 border-gray-100 dark:border-white/5 hover:border-primary/50'
             ]"

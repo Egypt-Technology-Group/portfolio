@@ -7,14 +7,17 @@ import apiClient from './client'
  * @returns {Promise}
  */
 export const submitContactForm = async (payload) => {
-  // Replace with actual API endpoint when backend is ready
-  // return apiClient('/api/contact', { body: payload })
+  const endpoint = import.meta.env.VITE_API_ENDPOINT || '/api/contact'
   
-  // For now, simulate API call
+  // If we have a real endpoint, use the API client
+  if (import.meta.env.VITE_API_ENDPOINT) {
+    return apiClient(endpoint, { body: payload })
+  }
+  
+  // Fallback / Development Simulation
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log('Form submitted to API:', payload)
-      resolve({ success: true, message: 'Message sent successfully!' })
+      resolve({ success: true, message: 'Message sent successfully (simulated)!' })
     }, 1500)
   })
 }

@@ -24,8 +24,11 @@
     ]
   },
   "skills": {
-    "title": "My Skills & Tools",
-    "subtitle": "Technologies I use to build digital solutions"
+    "title": "My Stack",
+    "subtitle": "Tools",
+    "description": "Modern technologies ensuring the highest quality standards.",
+    "webDev": "Web Development",
+    "design": "Design"
   },
   "services": {
     "title": "My Software Services",
@@ -63,6 +66,34 @@
       }
     ]
   },
+  "about": {
+    "title": "About",
+    "subtitle": "Me",
+    "tabs": {
+      "info": "Info",
+      "skills": "Skills",
+      "experience": "Experience",
+      "education": "Education"
+    }
+  },
+  "projects": {
+    "description": "Check out my latest projects built with modern technologies.",
+    "filters": {
+      "all": "All"
+    }
+  },
+  "articles": {
+    "academy": "Karim Gamal Tech Academy",
+    "title": "Deep",
+    "subtitle": "Articles",
+    "description": "Technical lessons that replace paid courses.",
+    "readMore": "Read More"
+  },
+  "testimonials": {
+    "title": "Client",
+    "subtitle": "Testimonials",
+    "quote": "Customer trust is my greatest asset"
+  },
   "footer": {
     "description": "Designing the future with a programming spirit and creative thinking. Karim Gamal - Professional UI Developer providing integrated technical solutions.",
     "quickLinks": "Quick Links",
@@ -73,6 +104,8 @@
   "contact": {
     "title": "Contact Me",
     "subtitle": "Have a project? Let's talk about it",
+    "stayInTouch": "Stay in Touch",
+    "stayInTouchDesc": "I'm always available to discuss software projects.",
     "name": "Full Name",
     "email": "Email Address",
     "subject": "Subject",

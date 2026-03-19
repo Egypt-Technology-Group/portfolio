@@ -7,10 +7,10 @@ const { t, locale } = useI18n()
 
 const activeTab = ref('info')
 const tabs = computed(() => [
-  { id: 'info', label: locale.value === 'ar' ? 'معلومات' : 'Info' },
-  { id: 'skills', label: locale.value === 'ar' ? 'المهارات' : 'Skills' },
-  { id: 'experience', label: locale.value === 'ar' ? 'الخبرة' : 'Experience' },
-  { id: 'education', label: locale.value === 'ar' ? 'التعليم' : 'Education' }
+  { id: 'info', label: t('about.tabs.info') },
+  { id: 'skills', label: t('about.tabs.skills') },
+  { id: 'experience', label: t('about.tabs.experience') },
+  { id: 'education', label: t('about.tabs.education') }
 ])
 
 const setActiveTab = (tabId) => {
@@ -25,7 +25,7 @@ const setActiveTab = (tabId) => {
         <!-- Sticky Sidebar -->
         <div class="flex-1 w-full xl:sticky xl:top-32 text-center xl:text-start">
           <h2 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-10">
-            {{ locale === 'ar' ? 'معلومات' : 'About' }} <span class="text-primary">{{ locale === 'ar' ? 'عني' : 'Me' }}</span>
+            {{ t('about.title') }} <span class="text-primary">{{ t('about.subtitle') }}</span>
           </h2>
           <div class="relative w-full max-w-[400px] aspect-[4/5] rounded-[3rem] overflow-hidden bg-white dark:bg-[#24262b] shadow-2xl mx-auto xl:mx-0 group border-4 border-white dark:border-white/5">
             <img 
