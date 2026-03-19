@@ -7,7 +7,7 @@ const { t } = useI18n({ useScope: 'global' })
 
 <template>
   <section id="skills"
-    class="w-full bg-white dark:bg-[#1a1c20] py-16 overflow-hidden select-none transition-colors duration-500">
+    class="w-full bg-gray-50 dark:bg-[#1a1c20] py-16 overflow-hidden select-none transition-colors duration-500">
     <div class="text-center mb-12 px-4">
       <h2 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-2">
         {{ t('skills.title') }}
@@ -63,15 +63,13 @@ const { t } = useI18n({ useScope: 'global' })
   align-items: center;
   position: relative;
   padding-block: 1.5rem;
-  background: rgb(249 250 251 / 0.5);
-  border-top: 1px solid rgb(243 244 246);
-  border-bottom: 1px solid rgb(243 244 246);
+  background: transparent;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
 }
 
 :global(.dark) .skills-container {
-  background: rgb(255 255 255 / 0.05);
-  border-top: 1px solid rgb(255 255 255 / 0.05);
-  border-bottom: 1px solid rgb(255 255 255 / 0.05);
+  border-color: transparent;
 }
 
 .skill-item {

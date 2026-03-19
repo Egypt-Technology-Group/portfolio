@@ -204,7 +204,7 @@ onUnmounted(stopAutoPlay)
   overflow: hidden;
   transition: background-color 0.5s;
 
-  @apply dark:bg-[#1a1c20];
+  @apply dark:bg-dark-bg;
 }
 
 .container {
@@ -288,7 +288,7 @@ onUnmounted(stopAutoPlay)
 
 /* ─── Card ────────────────────────────────────────────────────── */
 .card {
-  @apply bg-white dark:bg-[#24262b];
+  @apply bg-white dark:bg-dark-card;
   width: 100%;
   max-width: 680px;
   border-radius: 2rem;
@@ -427,7 +427,7 @@ onUnmounted(stopAutoPlay)
 }
 
 .nav-arrow {
-  @apply bg-white dark:bg-[#24262b];
+  @apply bg-white dark:bg-dark-card;
   width: 48px;
   height: 48px;
   border-radius: 1rem;
@@ -498,7 +498,7 @@ onUnmounted(stopAutoPlay)
   }
 
   .side-card__inner {
-    @apply bg-white dark:bg-[#24262b];
+    @apply bg-white dark:bg-dark-card;
     border-radius: 1.5rem;
     padding: 1.5rem;
     box-shadow: 0 8px 32px rgba(0,0,0,0.08);
