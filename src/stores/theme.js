@@ -1,13 +1,7 @@
-import { reactive, watchEffect } from 'vue'
+import { reactive } from 'vue'
 
 export const themeStore = reactive({
   isDark: false,
-
-  toggleTheme() {
-    this.isDark = !this.isDark
-    this.applyTheme()
-    localStorage.setItem('theme', this.isDark ? 'dark' : 'light')
-  },
 
   initTheme() {
     const savedTheme = localStorage.getItem('theme')
@@ -17,11 +11,20 @@ export const themeStore = reactive({
     this.applyTheme()
   },
 
+  toggleTheme() {
+    this.isDark = !this.isDark
+    localStorage.setItem('theme', this.isDark ? 'dark' : 'light')
+    this.applyTheme()
+  },
+
   applyTheme() {
+    const html = document.documentElement
     if (this.isDark) {
-      document.documentElement.classList.add('dark')
+      html.classList.add('dark')
+      html.style.colorScheme = 'dark'
     } else {
-      document.documentElement.classList.remove('dark')
+      html.classList.remove('dark')
+      html.style.colorScheme = 'light'
     }
   }
 })

@@ -4,6 +4,8 @@
 /* Import Tailwind */
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 
 /* Chrome, Edge, Safari */
 ::-webkit-scrollbar {

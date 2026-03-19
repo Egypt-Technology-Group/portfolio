@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { themeStore } from '@/stores/theme'
 import siteConfig from '@/config/site'
 
-const { t, locale } = useI18n()
+const { t, locale } = useI18n({ useScope: 'global' })
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 

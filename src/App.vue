@@ -1,38 +1,35 @@
 <script setup>
-import { watchEffect, onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterView } from 'vue-router'
 import AppNavbar from './components/layout/AppNavbar.vue'
 import AppFooter from './components/layout/AppFooter.vue'
 import { themeStore } from './stores/theme'
 
-const { locale } = useI18n()
+const { locale } = useI18n({ useScope: 'global' })
 
-// Initialize theme on app mount
+// Watch for language changes
+watch(locale, (newLocale) => {
+  updateHtmlAttributes(newLocale)
+}, { immediate: true })
+
+function updateHtmlAttributes(lang) {
+  const dir = lang === 'ar' ? 'rtl' : 'ltr'
+  document.documentElement.dir = dir
+  document.documentElement.lang = lang
+  localStorage.setItem('locale', lang)
+}
+
 onMounted(() => {
+  // Initialize theme
   themeStore.initTheme()
   
-  // Load saved locale from localStorage
+  // Ensure the correct initial locale from localStorage
   const savedLocale = localStorage.getItem('locale')
   if (savedLocale && (savedLocale === 'ar' || savedLocale === 'en')) {
     locale.value = savedLocale
   }
-  
-  // Set initial HTML attributes
-  updateHtmlAttributes()
 })
-
-// Watch for language changes and update the HTML attributes automatically
-watchEffect(() => {
-  updateHtmlAttributes()
-})
-
-function updateHtmlAttributes() {
-  const dir = locale.value === 'ar' ? 'rtl' : 'ltr'
-  document.documentElement.dir = dir
-  document.documentElement.lang = locale.value
-  localStorage.setItem('locale', locale.value)
-}
 </script>
 
 <template>

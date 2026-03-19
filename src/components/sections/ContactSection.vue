@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import siteConfig from '@/config/site'
 import { submitContactForm } from '@/api/contact'
 
-const { t, locale } = useI18n()
+const { t, locale } = useI18n({ useScope: 'global' })
 
 const form = ref({
   name: '',

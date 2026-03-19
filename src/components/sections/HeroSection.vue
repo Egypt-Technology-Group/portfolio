@@ -1,13 +1,14 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import siteConfig from '@/config/site'
 
-const { t, tm, rt } = useI18n()
+const { t, tm, rt } = useI18n({ useScope: 'global' })
 
 const currentText = ref('')
 const currentIndex = ref(0)
 const isDeleting = ref(false)
+let timer = null
 
 const roles = computed(() => tm('hero.roles'))
 
@@ -27,20 +28,35 @@ const typeWriter = () => {
     currentText.value = current.substring(0, currentText.value.length + 1)
   }
 
+  let nextSpeed = isDeleting.value ? deletingSpeed : typingSpeed
+
   if (!isDeleting.value && currentText.value === current) {
     isDeleting.value = true
-    setTimeout(typeWriter, pauseTime)
+    nextSpeed = pauseTime
   } else if (isDeleting.value && currentText.value === '') {
     isDeleting.value = false
     currentIndex.value = (currentIndex.value + 1) % currentRoles.length
-    setTimeout(typeWriter, 500)
-  } else {
-    setTimeout(typeWriter, isDeleting.value ? deletingSpeed : typingSpeed)
+    nextSpeed = 500
   }
+
+  timer = setTimeout(typeWriter, nextSpeed)
 }
 
+// Restart typewriter when roles change (language change)
+watch(roles, () => {
+  if (timer) clearTimeout(timer)
+  currentText.value = ''
+  currentIndex.value = 0
+  isDeleting.value = false
+  typeWriter()
+}, { deep: true })
+
 onMounted(() => {
-  setTimeout(typeWriter, 1000)
+  typeWriter()
+})
+
+onUnmounted(() => {
+  if (timer) clearTimeout(timer)
 })
 </script>
 
