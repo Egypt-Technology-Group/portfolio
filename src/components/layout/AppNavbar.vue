@@ -1,184 +1,147 @@
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { themeStore } from '@/stores/theme'
+import siteConfig from '@/config/site'
+
+const { t, locale } = useI18n()
+const isMenuOpen = ref(false)
+const isScrolled = ref(false)
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+const toggleLanguage = () => {
+  locale.value = locale.value === 'ar' ? 'en' : 'ar'
+}
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 20
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+
+const navLinks = [
+  { name: 'navbar.home', hash: '#home' },
+  { name: 'navbar.services', hash: '#services' },
+  { name: 'navbar.about', hash: '#about' },
+  { name: 'navbar.projects', hash: '#projects' },
+  { name: 'navbar.articles', hash: '#articles' },
+  { name: 'navbar.contact', hash: '#contact' }
+]
+</script>
+
 <template>
-  <nav dir="rtl" class="fixed top-0 w-full z-[200] h-[69px] flex items-center px-2 md:px-4 transition-all duration-300 bg-white/95 dark:bg-[#1a1c20]/95 shadow-md backdrop-blur-sm">
-    <div class="w-full flex items-center justify-between relative z-[210]">
+  <nav 
+    :class="[
+      'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4',
+      isScrolled ? 'bg-white/80 dark:bg-[#1a1c20]/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+    ]"
+  >
+    <div class="container mx-auto flex items-center justify-between">
       <!-- Logo -->
-      <router-link 
-        to="/" 
-        aria-label="الرئيسية"
-        class="relative block h-[65px] w-[140px] md:w-[170px] xl:w-[200px] -mt-1"
-      >
-        <img
-          src="@/assets/karim.avif"
-          alt="كريم جمال - مطور ويب"
-          class="object-contain"
-          style="position: absolute; height: 100%; width: 100%; inset: 0px; object-position: right center; color: transparent; transform: scale(1.5); transform-origin: right center;"
-        />
+      <router-link to="/" class="text-2xl font-black text-gray-900 dark:text-white tracking-tighter no-underline group">
+        {{ siteConfig.name }}<span class="text-primary group-hover:drop-shadow-[0_0_8px_#FF8C00] transition-all">.</span>
       </router-link>
 
-      <!-- Desktop Navigation -->
-      <ul class="hidden lg:flex items-center gap-x-10 h-full list-none p-0">
-        <li class="relative h-[69px] flex items-center">
-          <a 
-            href="#home" 
-            aria-label="الرئيسية"
-            class="text-[17px] font-black transition-colors duration-300 no-underline text-[#FF8C00]"
-          >
-            الرئيسية
-          </a>
-          <div class="absolute bottom-0 left-0 right-0 h-[4px] bg-[#FF8C00] rounded-t-full" style="opacity: 1;"></div>
-        </li>
-        <li class="relative h-[69px] flex items-center">
-          <a 
-            href="#services" 
-            aria-label="خدماتي"
-            class="text-[17px] font-black transition-colors duration-300 no-underline text-gray-700 dark:text-white/80 hover:text-[#FF8C00]"
-          >
-            خدماتي
-          </a>
-        </li>
-        <li class="relative h-[69px] flex items-center">
-          <a 
-            href="#about" 
-            aria-label="معلومات عني"
-            class="text-[17px] font-black transition-colors duration-300 no-underline text-gray-700 dark:text-white/80 hover:text-[#FF8C00]"
-          >
-            معلومات عني
-          </a>
-        </li>
-        <li class="relative h-[69px] flex items-center">
-          <a 
-            href="#projects" 
-            aria-label="معرض أعمالي"
-            class="text-[17px] font-black transition-colors duration-300 no-underline text-gray-700 dark:text-white/80 hover:text-[#FF8C00]"
-          >
-            معرض أعمالي
-          </a>
-        </li>
-        <li class="relative h-[69px] flex items-center">
-          <a 
-            href="#articles" 
-            aria-label="المقالات"
-            class="text-[17px] font-black transition-colors duration-300 no-underline text-gray-700 dark:text-white/80 hover:text-[#FF8C00]"
-          >
-            المقالات
-          </a>
-        </li>
-        <li class="relative h-[69px] flex items-center">
-          <a 
-            href="#testimonials" 
-            aria-label="آراء العملاء"
-            class="text-[17px] font-black transition-colors duration-300 no-underline text-gray-700 dark:text-white/80 hover:text-[#FF8C00]"
-          >
-            آراء العملاء
-          </a>
-        </li>
-      </ul>
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center gap-8">
+        <ul class="flex items-center gap-6 list-none p-0 m-0 font-bold text-sm">
+          <li v-for="link in navLinks" :key="link.hash">
+            <a 
+              :href="link.hash" 
+              class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors no-underline"
+            >
+              {{ t(link.name) }}
+            </a>
+          </li>
+        </ul>
 
-      <!-- Right Side Actions -->
-      <div class="flex items-center gap-3 relative z-[220]">
-        <!-- Contact Button -->
-        <a 
-          href="#contact" 
-          aria-label="تواصل معي"
-          class="hidden md:block px-5 py-1.5 rounded-full font-bold text-sm bg-[#FF8C00] text-white no-underline"
-        >
-          تواصل معي
-        </a>
+        <div class="h-6 w-[1px] bg-gray-300 dark:bg-gray-700 mx-2"></div>
 
-        <!-- Theme Toggle -->
-        <button
-          @click="toggleTheme"
-          aria-label="تفعيل الوضع المضيء"
-          class="text-[#FF8C00] p-2 rounded-full border-none bg-transparent cursor-pointer"
+        <div class="flex items-center gap-3">
+          <!-- Language Toggle -->
+          <button 
+            @click="toggleLanguage"
+            class="p-2 text-gray-600 dark:text-gray-300 hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
+            :title="t('accessibility.toggleLanguage')"
+          >
+            <span class="font-bold uppercase text-xs">{{ locale === 'ar' ? 'EN' : 'AR' }}</span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button 
+            @click="themeStore.toggleTheme"
+            class="p-2 text-gray-600 dark:text-gray-300 hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
+            :title="t('accessibility.toggleTheme')"
+          >
+            <i :class="['fas', themeStore.isDark ? 'fa-sun' : 'fa-moon']"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Toggle -->
+      <div class="flex lg:hidden items-center gap-4">
+        <button 
+          @click="themeStore.toggleTheme"
+          class="p-2 text-gray-600 dark:text-gray-300 bg-transparent border-none"
         >
-          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
+          <i :class="['fas', themeStore.isDark ? 'fa-sun' : 'fa-moon']"></i>
         </button>
-
-        <!-- Language Toggle -->
-        <button
-          @click="toggleLanguage"
-          aria-label="Switch to English"
-          class="w-9 h-9 rounded-full border border-[#FF8C00]/30 text-[#FF8C00] font-bold text-[12px] bg-transparent cursor-pointer"
+        
+        <button 
+          @click="toggleMenu"
+          class="p-2 text-gray-600 dark:text-gray-300 bg-transparent border-none text-xl"
         >
-          EN
-        </button>
-
-        <!-- Mobile Menu Toggle -->
-        <button
-          @click="toggleMobileMenu"
-          aria-label="فتح القائمة"
-          class="lg:hidden text-2xl text-[#FF8C00] border-none bg-transparent cursor-pointer"
-        >
-          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="28" width="28" xmlns="http://www.w3.org/2000/svg">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
+          <i :class="['fas', isMenuOpen ? 'fa-times' : 'fa-bars']"></i>
         </button>
       </div>
     </div>
 
     <!-- Mobile Menu -->
-    <div v-if="mobileMenuOpen" class="lg:hidden bg-white dark:bg-[#1a1c20] border-t border-gray-200 dark:border-gray-700">
-      <div class="px-4 py-6 space-y-4">
-        <a
-          v-for="item in navItems"
-          :key="item.key"
-          :href="item.to"
-          class="block py-2 text-lg font-medium text-gray-700 dark:text-gray-300 hover:text-[#FF8C00] no-underline"
-          @click="closeMobileMenu"
-        >
-          {{ item.label }}
-        </a>
-        <a 
-          href="#contact" 
-          class="hidden md:block px-5 py-1.5 rounded-full font-bold text-sm bg-[#FF8C00] text-white no-underline w-full text-center"
-          @click="closeMobileMenu"
-        >
-          تواصل معي
-        </a>
+    <transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0 -translate-y-4"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 -translate-y-4"
+    >
+      <div 
+        v-if="isMenuOpen" 
+        class="absolute top-full left-0 right-0 bg-white dark:bg-[#1a1c20] shadow-xl lg:hidden p-6 border-t border-gray-100 dark:border-gray-800"
+      >
+        <ul class="flex flex-col gap-4 list-none p-0 m-0 font-bold">
+          <li v-for="link in navLinks" :key="link.hash">
+            <a 
+              :href="link.hash" 
+              @click="isMenuOpen = false"
+              class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors no-underline block py-2"
+            >
+              {{ t(link.name) }}
+            </a>
+          </li>
+        </ul>
+        <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
+          <button 
+            @click="toggleLanguage"
+            class="font-bold text-sm text-primary bg-transparent border-none"
+          >
+            {{ locale === 'ar' ? 'English' : 'العربية' }}
+          </button>
+        </div>
       </div>
-    </div>
+    </transition>
   </nav>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { useTheme } from '@/composables/useTheme'
-
-const { isDark, toggleTheme } = useTheme()
-
-const mobileMenuOpen = ref(false)
-
-const navItems = [
-  { key: 'home', label: 'الرئيسية', to: '#home' },
-  { key: 'services', label: 'خدماتي', to: '#services' },
-  { key: 'about', label: 'معلومات عني', to: '#about' },
-  { key: 'work', label: 'معرض أعمالي', to: '#projects' },
-  { key: 'articles', label: 'المقالات', to: '#articles' },
-  { key: 'testimonials', label: 'آراء العملاء', to: '#testimonials' }
-]
-
-const toggleLanguage = () => {
-  // Language toggle logic would go here
-  console.log('Toggle language')
-}
-
-const toggleMobileMenu = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value
-}
-
-const closeMobileMenu = () => {
-  mobileMenuOpen.value = false
-}
-</script>
+<style scoped>
+.text-primary { color: #FF8C00; }
+</style>

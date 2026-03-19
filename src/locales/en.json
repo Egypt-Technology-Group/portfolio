@@ -5,15 +5,23 @@
     "projects": "Projects",
     "skills": "Skills",
     "contact": "Contact",
-    "contactButton": "Contact Me"
+    "about": "About",
+    "articles": "Articles",
+    "testimonials": "Testimonials"
   },
   "hero": {
-    "intro": "Hello, I'm",
+    "greeting": "Welcome to my creative space",
+    "namePrefix": "Hello, I'm",
     "name": "Karim Gamal",
-    "role": "Web Developer",
-    "description": "Web developer specializing in building great user experiences and modern web solutions using the latest technologies and tools.",
-    "downloadCV": "Download CV",
-    "viewProjects": "View Projects"
+    "description": "I'm a Full-stack Web Developer combining the power of coding with SEO expertise. I focus on writing clean code that ensures your project leads the way.",
+    "ctaWork": "Let's work together",
+    "ctaResume": "Resume",
+    "roles": [
+      "Frontend Developer",
+      "Web Applications Developer",
+      "React & Vue Developer",
+      "UI Developer"
+    ]
   },
   "skills": {
     "title": "My Skills & Tools",
@@ -22,23 +30,62 @@
   "services": {
     "title": "My Software Services",
     "subtitle": "Integrated technical solutions for your digital business growth",
-    "list": [
+    "items": [
       {
-        "id": 1,
         "title": "Website Maintenance",
-        "description": "I provide maintenance and repair services to fix bugs quickly and ensure continuous operation."
+        "description": "I provide maintenance and repair services to fix bugs quickly and ensure continuous operation.",
+        "icon": "fas fa-tools"
       },
       {
-        "id": 2,
         "title": "Store Management",
-        "description": "I manage your online store regularly, monitoring performance to achieve the best long-term results."
+        "description": "I manage your online store regularly, monitoring performance to achieve the best long-term results.",
+        "icon": "fas fa-tasks"
       },
       {
-        "id": 3,
         "title": "Web Development",
-        "description": "I design and develop professional websites and e-commerce stores that help you stand out."
+        "description": "I design and develop professional websites and e-commerce stores that help you stand out.",
+        "icon": "fas fa-code"
+      },
+      {
+        "title": "Content Writing",
+        "description": "Content writing services provide the expertise you need to create engaging and informative content tailored to your audience.",
+        "icon": "fas fa-pen-nib"
+      },
+      {
+        "title": "SEO Optimization",
+        "description": "I apply advanced SEO strategies to improve your search engine rankings and increase targeted visitors.",
+        "icon": "fas fa-search-dollar"
+      },
+      {
+        "title": "Logo Design",
+        "description": "I design unique creative logos with modern fonts and multiple options to fit your brand identity.",
+        "icon": "fas fa-palette"
       }
     ]
+  },
+  "footer": {
+    "description": "Designing the future with a programming spirit and creative thinking. Karim Gamal - Professional UI Developer providing integrated technical solutions.",
+    "quickLinks": "Quick Links",
+    "directContact": "Direct Contact",
+    "copyright": "Designed and Developed by {name} © {year}",
+    "goTop": "Go to Top"
+  },
+  "contact": {
+    "title": "Contact Me",
+    "subtitle": "Have a project? Let's talk about it",
+    "name": "Full Name",
+    "email": "Email Address",
+    "subject": "Subject",
+    "message": "Your Message",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "success": "Your message was sent successfully!",
+    "error": "An error occurred while sending. Please try again."
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to Home"
   },
   "common": {
     "loading": "Loading...",
@@ -48,7 +95,9 @@
   "accessibility": {
     "toggleTheme": "Toggle dark mode",
     "toggleLanguage": "Toggle language",
-    "openMobileMenu": "Open menu",
-    "closeMobileMenu": "Close menu"
+    "visitFacebook": "Visit Facebook",
+    "visitLinkedin": "Visit LinkedIn",
+    "visitWhatsapp": "Chat on WhatsApp",
+    "visitGithub": "Visit GitHub"
   }
 }

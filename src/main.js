@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
 import './style.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 import App from './App.vue'
-import router from './router/router'
-import i18n from './i18n'
+import router from './router'
+import i18n from './locales'
 
 const app = createApp(App)
 

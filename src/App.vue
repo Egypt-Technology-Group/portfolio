@@ -2,16 +2,15 @@
 import { watchEffect, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterView } from 'vue-router'
-import AppNavbar from '@/components/layout/AppNavbar.vue'
-import AppFooter from '@/components/layout/AppFooter.vue'
-import { useTheme } from '@/composables/useTheme'
+import AppNavbar from './components/layout/AppNavbar.vue'
+import AppFooter from './components/layout/AppFooter.vue'
+import { themeStore } from './stores/theme'
 
 const { locale } = useI18n()
-const { initTheme } = useTheme()
 
 // Initialize theme on app mount
 onMounted(() => {
-  initTheme()
+  themeStore.initTheme()
   
   // Load saved locale from localStorage
   const savedLocale = localStorage.getItem('locale')
@@ -20,15 +19,20 @@ onMounted(() => {
   }
   
   // Set initial HTML attributes
-  document.documentElement.dir = locale.value === 'ar' ? 'rtl' : 'ltr'
-  document.documentElement.lang = locale.value
+  updateHtmlAttributes()
 })
 
-// Watch for language changes and update the HTML dir attribute automatically
+// Watch for language changes and update the HTML attributes automatically
 watchEffect(() => {
-  document.documentElement.dir = locale.value === 'ar' ? 'rtl' : 'ltr'
-  document.documentElement.lang = locale.value
+  updateHtmlAttributes()
 })
+
+function updateHtmlAttributes() {
+  const dir = locale.value === 'ar' ? 'rtl' : 'ltr'
+  document.documentElement.dir = dir
+  document.documentElement.lang = locale.value
+  localStorage.setItem('locale', locale.value)
+}
 </script>
 
 <template>
@@ -40,3 +44,12 @@ watchEffect(() => {
     <AppFooter />
   </div>
 </template>
+
+<style>
+/* Smooth transitions for theme toggle */
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+</style>
