@@ -2,9 +2,16 @@ import { createI18n } from 'vue-i18n'
 import ar from './ar.json'
 import en from './en.json'
 
+const getInitialLocale = () => {
+  if (typeof window !== 'undefined' && localStorage.getItem('locale')) {
+    return localStorage.getItem('locale')
+  }
+  return 'ar'
+}
+
 const i18n = createI18n({
   legacy: false,
-  locale: localStorage.getItem('locale') || 'ar',
+  locale: getInitialLocale(),
   fallbackLocale: 'en',
   messages: {
     ar,

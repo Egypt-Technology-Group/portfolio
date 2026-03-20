@@ -14,10 +14,15 @@ watch(locale, (newLocale) => {
 }, { immediate: true })
 
 function updateHtmlAttributes(lang) {
+  if (typeof document === 'undefined') return
+  
   const dir = lang === 'ar' ? 'rtl' : 'ltr'
   document.documentElement.dir = dir
   document.documentElement.lang = lang
-  localStorage.setItem('locale', lang)
+  
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('locale', lang)
+  }
 }
 
 onMounted(() => {
@@ -25,9 +30,11 @@ onMounted(() => {
   themeStore.initTheme()
   
   // Ensure the correct initial locale from localStorage
-  const savedLocale = localStorage.getItem('locale')
-  if (savedLocale && (savedLocale === 'ar' || savedLocale === 'en')) {
-    locale.value = savedLocale
+  if (typeof window !== 'undefined') {
+    const savedLocale = localStorage.getItem('locale')
+    if (savedLocale && (savedLocale === 'ar' || savedLocale === 'en')) {
+      locale.value = savedLocale
+    }
   }
 })
 </script>

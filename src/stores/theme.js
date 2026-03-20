@@ -4,6 +4,8 @@ export const themeStore = reactive({
   isDark: false,
 
   initTheme() {
+    if (typeof window === 'undefined') return
+
     const savedTheme = localStorage.getItem('theme')
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     
@@ -13,11 +15,15 @@ export const themeStore = reactive({
 
   toggleTheme() {
     this.isDark = !this.isDark
-    localStorage.setItem('theme', this.isDark ? 'dark' : 'light')
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', this.isDark ? 'dark' : 'light')
+    }
     this.applyTheme()
   },
 
   applyTheme() {
+    if (typeof document === 'undefined') return
+
     const html = document.documentElement
     if (this.isDark) {
       html.classList.add('dark')

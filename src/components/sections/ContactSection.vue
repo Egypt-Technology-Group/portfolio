@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import siteConfig from '@/config/site'
 import { submitContactForm } from '@/api/contact'
@@ -15,34 +15,66 @@ const form = ref({
 
 const isSubmitting = ref(false)
 const submitSuccess = ref(false)
-const submitError = ref(false)
+const apiError = ref(null)
+
+const errors = ref({
+  name: '',
+  message: ''
+})
+
+const validateForm = () => {
+  let isValid = true
+  errors.value.name = ''
+  errors.value.message = ''
+
+  if (form.value.name.length < 3) {
+    errors.value.name = locale.value === 'ar' ? 'الاسم يجب أن يكون 3 أحرف على الأقل' : 'Name must be at least 3 characters'
+    isValid = false
+  }
+
+  if (form.value.message.length < 10) {
+    errors.value.message = locale.value === 'ar' ? 'الرسالة يجب أن تكون 10 أحرف على الأقل' : 'Message must be at least 10 characters'
+    isValid = false
+  }
+
+  return isValid
+}
 
 const handleSubmit = async () => {
+  if (isSubmitting.value) return
+  if (!validateForm()) return
+
   isSubmitting.value = true
   submitSuccess.value = false
-  submitError.value = false
+  apiError.value = null
 
   try {
-    // 1. Submit to API
-    await submitContactForm(form.value)
+    const response = await submitContactForm(form.value)
     
-    // 2. WhatsApp Fallback
-    const whatsappMessage = encodeURIComponent(
-      `*New message from portfolio*\n\n` +
-      `*Name:* ${form.value.name}\n` +
-      `*Email:* ${form.value.email}\n` +
-      `*Subject:* ${form.value.subject}\n\n` +
-      `*Message:*\n${form.value.message}`
-    )
-    const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${whatsappMessage}`
-    window.open(whatsappUrl, '_blank')
-
-    submitSuccess.value = true
-    form.value = { name: '', email: '', subject: '', message: '' }
+    if (response.success) {
+      submitSuccess.value = true
+      form.value = { name: '', email: '', subject: '', message: '' }
+    } else {
+      apiError.value = response.error
+    }
   } catch (error) {
-    submitError.value = true
+    apiError.value = locale.value === 'ar' ? 'حدث خطأ غير متوقع' : 'An unexpected error occurred'
   } finally {
     isSubmitting.value = false
+  }
+}
+
+const openWhatsApp = () => {
+  const whatsappMessage = encodeURIComponent(
+    `*New message from portfolio*\n\n` +
+    `*Name:* ${form.value.name}\n` +
+    `*Email:* ${form.value.email}\n` +
+    `*Subject:* ${form.value.subject}\n\n` +
+    `*Message:*\n${form.value.message}`
+  )
+  const whatsappUrl = `https://wa.me/${siteConfig.whatsapp}?text=${whatsappMessage}`
+  if (typeof window !== 'undefined') {
+    window.open(whatsappUrl, '_blank')
   }
 }
 
@@ -50,12 +82,13 @@ const handleSubmit = async () => {
 let seoScript = null
 
 const addStructuredData = () => {
+  if (typeof document === 'undefined') return
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
     "name": t('contact.title'),
     "description": t('contact.subtitle'),
-    "url": window.location.href
+    "url": typeof window !== 'undefined' ? window.location.href : ''
   }
   
   seoScript = document.createElement('script')
@@ -66,7 +99,7 @@ const addStructuredData = () => {
 }
 
 const removeStructuredData = () => {
-  if (seoScript && seoScript.parentNode) {
+  if (typeof document !== 'undefined' && seoScript && seoScript.parentNode) {
     seoScript.parentNode.removeChild(seoScript)
   }
 }
@@ -82,7 +115,7 @@ onUnmounted(() => {
 const socialLinks = [
   { name: 'Facebook', url: siteConfig.social.facebook, icon: 'fab fa-facebook-f', color: '#1877F2' },
   { name: 'LinkedIn', url: siteConfig.social.linkedin, icon: 'fab fa-linkedin-in', color: '#0A66C2' },
-  { name: 'WhatsApp', url: `https://wa.me/${siteConfig.whatsapp}`, icon: 'fab fa-whatsapp', color: '#25D366' },
+  { name: 'WhatsApp', action: openWhatsApp, icon: 'fab fa-whatsapp', color: '#25D366' },
   { name: 'Telegram', url: siteConfig.social.telegram, icon: 'fab fa-telegram-plane', color: '#24A1DE' }
 ]
 </script>
@@ -128,7 +161,9 @@ const socialLinks = [
                   required 
                   :placeholder="t('contact.name')" 
                   class="form-input"
+                  :class="{'border-red-500': errors.name}"
                 >
+                <p v-if="errors.name" class="text-red-500 text-xs font-bold px-2">{{ errors.name }}</p>
               </div>
               <div class="space-y-2">
                 <input 
@@ -149,12 +184,16 @@ const socialLinks = [
               class="form-input"
             >
             
-            <textarea 
-              v-model="form.message" 
-              required 
-              :placeholder="t('contact.message')" 
-              class="form-input h-40 resize-none"
-            ></textarea>
+            <div class="space-y-2">
+              <textarea 
+                v-model="form.message" 
+                required 
+                :placeholder="t('contact.message')" 
+                class="form-input h-40 resize-none"
+                :class="{'border-red-500': errors.message}"
+              ></textarea>
+              <p v-if="errors.message" class="text-red-500 text-xs font-bold px-2">{{ errors.message }}</p>
+            </div>
             
             <button 
               type="submit" 
@@ -162,7 +201,7 @@ const socialLinks = [
               class="w-full h-16 bg-primary text-white rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <i v-if="isSubmitting" class="fas fa-circle-notch animate-spin"></i>
-              <i v-else class="fab fa-whatsapp text-xl"></i>
+              <i v-else class="fas fa-paper-plane"></i>
               {{ isSubmitting ? t('contact.sending') : t('contact.send') }}
             </button>
 
@@ -171,8 +210,8 @@ const socialLinks = [
               <div v-if="submitSuccess" class="p-4 bg-green-100 text-green-700 rounded-xl text-center font-bold">
                 {{ t('contact.success') }}
               </div>
-              <div v-else-if="submitError" class="p-4 bg-red-100 text-red-700 rounded-xl text-center font-bold">
-                {{ t('contact.error') }}
+              <div v-else-if="apiError" class="p-4 bg-red-100 text-red-700 rounded-xl text-center font-bold">
+                {{ apiError }}
               </div>
             </transition>
           </form>
@@ -193,17 +232,26 @@ const socialLinks = [
           </div>
           
           <div class="grid grid-cols-2 gap-4">
-            <a 
-              v-for="social in socialLinks" 
-              :key="social.name"
-              :href="social.url" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="social-card group"
-            >
-              <i :class="[social.icon, 'text-2xl group-hover:scale-110 transition-transform']" :style="{ color: social.color }"></i>
-              <span class="font-bold text-gray-800 dark:text-gray-200 text-sm">{{ social.name }}</span>
-            </a>
+            <template v-for="social in socialLinks" :key="social.name">
+              <a 
+                v-if="social.url"
+                :href="social.url" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="social-card group"
+              >
+                <i :class="[social.icon, 'text-2xl group-hover:scale-110 transition-transform']" :style="{ color: social.color }"></i>
+                <span class="font-bold text-gray-800 dark:text-gray-200 text-sm">{{ social.name }}</span>
+              </a>
+              <button 
+                v-else-if="social.action"
+                @click="social.action"
+                class="social-card group border-none cursor-pointer w-full text-start"
+              >
+                <i :class="[social.icon, 'text-2xl group-hover:scale-110 transition-transform']" :style="{ color: social.color }"></i>
+                <span class="font-bold text-gray-800 dark:text-gray-200 text-sm">{{ social.name }}</span>
+              </button>
+            </template>
           </div>
         </div>
       </div>

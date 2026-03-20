@@ -1,4 +1,4 @@
-import apiClient from './client'
+import apiClient from './client';
 
 /**
  * Submit contact form payload to backend
@@ -7,17 +7,14 @@ import apiClient from './client'
  * @returns {Promise}
  */
 export const submitContactForm = async (payload) => {
-  const endpoint = import.meta.env.VITE_API_ENDPOINT || '/api/contact'
-  
-  // If we have a real endpoint, use the API client
-  if (import.meta.env.VITE_API_ENDPOINT) {
-    return apiClient(endpoint, { body: payload })
+  if (!import.meta.env.VITE_API_ENDPOINT) {
+    const warning = 'VITE_API_ENDPOINT is not defined. API call will likely fail.';
+    return {
+      success: false,
+      data: null,
+      error: warning
+    };
   }
-  
-  // Fallback / Development Simulation
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, message: 'Message sent successfully (simulated)!' })
-    }, 1500)
-  })
-}
+
+  return apiClient('/contact', { body: payload });
+};
